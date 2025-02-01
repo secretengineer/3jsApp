@@ -14,13 +14,21 @@ renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
 
-renderer.render(scene, camera);
+renderer.render( scene,camera );
 
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({ color: 0xFF6347, wireframe: true } );
+const material = new THREE.MeshStandardMaterial({ color: 0xFF6347 } );
 const torus = new THREE.Mesh(geometry, material);
 
 scene.add(torus)
+
+// Add lighting
+const pointLight = new THREE.PointLight(0xffffff);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+const ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(ambientLight);
 
 function animate() {
   requestAnimationFrame( animate );
@@ -28,3 +36,10 @@ function animate() {
 }
 
 animate();
+
+// Handle window resize
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
